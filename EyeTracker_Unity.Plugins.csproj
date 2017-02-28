@@ -5,16 +5,16 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{FC04D110-B2FD-E207-8E28-5C3BF5B76461}</ProjectGuid>
+    <ProjectGuid>{36700048-3B0E-E525-A318-FDA5262CFEA0}</ProjectGuid>
     <OutputType>Library</OutputType>
-    <AssemblyName>Assembly-CSharp-Editor</AssemblyName>
+    <AssemblyName>Assembly-CSharp-firstpass</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
-    <TargetFrameworkProfile>Unity Full v3.5</TargetFrameworkProfile>
+    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
     <CompilerResponseFile></CompilerResponseFile>
-    <UnityProjectType>Editor:5</UnityProjectType>
+    <UnityProjectType>GamePlugins:3</UnityProjectType>
     <UnityBuildTarget>StandaloneWindows:5</UnityBuildTarget>
     <UnityVersion>5.3.4f1</UnityVersion>
     <RootNamespace></RootNamespace>
@@ -52,71 +52,40 @@
     <Reference Include="UnityEngine">
       <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor">
-      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.Advertisements">
-      <HintPath>Library\UnityAssemblies\UnityEditor.Advertisements.dll</HintPath>
-    </Reference>
-    <Reference Include="nunit.framework">
-      <HintPath>Library\UnityAssemblies\nunit.framework.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.EditorTestsRunner">
-      <HintPath>Library\UnityAssemblies\UnityEditor.EditorTestsRunner.dll</HintPath>
-    </Reference>
     <Reference Include="UnityEngine.UI">
       <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.UI">
-      <HintPath>Library\UnityAssemblies\UnityEditor.UI.dll</HintPath>
     </Reference>
     <Reference Include="UnityEngine.Networking">
       <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEditor.Networking">
-      <HintPath>Library\UnityAssemblies\UnityEditor.Networking.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.TreeEditor">
-      <HintPath>Library\UnityAssemblies\UnityEditor.TreeEditor.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.Graphs">
-      <HintPath>Library\UnityAssemblies\UnityEditor.Graphs.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.Android.Extensions">
-      <HintPath>Library\UnityAssemblies\UnityEditor.Android.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.WebGL.Extensions">
-      <HintPath>Library\UnityAssemblies\UnityEditor.WebGL.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="UnityEditor.WindowsStandalone.Extensions">
-      <HintPath>Library\UnityAssemblies\UnityEditor.WindowsStandalone.Extensions.dll</HintPath>
-    </Reference>
-    <Reference Include="SyntaxTree.VisualStudio.Unity.Bridge">
-      <HintPath>Library\UnityAssemblies\SyntaxTree.VisualStudio.Unity.Bridge.dll</HintPath>
+    <Reference Include="UnityEditor">
+      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
     </Reference>
     <Reference Include="Tobii.EyeX.Client.Net20">
       <HintPath>Assets\Tobii\Plugins\x86_64\Tobii.EyeX.Client.Net20.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="EyeTracker_Unity.Plugins.csproj">
-      <Project>{36700048-3B0E-E525-A318-FDA5262CFEA0}</Project>
-      <Name>EyeTracker_Unity.Plugins</Name>
-    </ProjectReference>
-    <ProjectReference Include="EyeTracker_Unity.csproj">
-      <Project>{AA550C77-BA1E-0F0F-ADDC-A894C9F4284C}</Project>
-      <Name>EyeTracker_Unity</Name>
-    </ProjectReference>
-    <ProjectReference Include="EyeTracker_Unity.Editor.Plugins.csproj">
-      <Project>{4B05FF8B-F2C9-7AD4-5B36-353DB542EC84}</Project>
-      <Name>EyeTracker_Unity.Editor.Plugins</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Compile Include="Assets\Tobii\DemoScenes\Editor\DemoScenesToolsMenu.cs" />
-    <Compile Include="Assets\Tobii\EyeTrackingFramework\Editor\EyeTrackingClientLibraryDeployer.cs" />
-    <Compile Include="Assets\Tobii\EyeTrackingFramework\Editor\EyeTrackingSettingsWindow.cs" />
-    <Compile Include="Assets\Tobii\EyeTrackingFramework\Editor\Tests\UnityPlayerGameViewBoundsTest.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\CastRemoteDisplayManager.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\Deprecated\CastRemoteDisplayAudioListener.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\Internal\Android\CastRemoteDisplayAndroidExtension.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\Internal\CastRemoteDisplayAudioInterceptor.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\Internal\CastRemoteDisplayExtensionManager.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\Internal\CastRemoteDisplayManagerEditor.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\Internal\ICastRemoteDisplayExtension.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\Internal\UnitySimulator\CastRemoteDisplaySimulator.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\Internal\UnitySimulator\CastRemoteDisplaySimulatorEditor.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\Internal\UnitySimulator\CastRemoteDisplayUnityExtension.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\Internal\iOS\CastRemoteDisplayiOSExtension.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\Internal\iOS\CastRemoteDisplayiOSUnityBridge.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\UI\Scripts\CastButtonFrame.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\UI\Scripts\CastDefaultUI.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\UI\Scripts\CastDefaultUIEditor.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\UI\Scripts\CastDisconnectDialog.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\UI\Scripts\CastErrorDialog.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\UI\Scripts\CastListButton.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\UI\Scripts\CastListDialog.cs" />
+    <Compile Include="Assets\Plugins\GoogleCastRemoteDisplay\UI\Scripts\FirstTimeCastDialog.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Plugins\GoogleCastRemoteDisplay\README.txt" />
