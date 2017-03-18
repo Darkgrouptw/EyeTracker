@@ -108,17 +108,9 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="EyeTracker_Unity.Plugins.csproj">
-      <Project>{36700048-3B0E-E525-A318-FDA5262CFEA0}</Project>
-      <Name>EyeTracker_Unity.Plugins</Name>
-    </ProjectReference>
     <ProjectReference Include="EyeTracker_Unity.csproj">
       <Project>{AA550C77-BA1E-0F0F-ADDC-A894C9F4284C}</Project>
       <Name>EyeTracker_Unity</Name>
-    </ProjectReference>
-    <ProjectReference Include="EyeTracker_Unity.Editor.Plugins.csproj">
-      <Project>{4B05FF8B-F2C9-7AD4-5B36-353DB542EC84}</Project>
-      <Name>EyeTracker_Unity.Editor.Plugins</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -128,7 +120,6 @@
     <Compile Include="Assets\Tobii\EyeTrackingFramework\Editor\Tests\UnityPlayerGameViewBoundsTest.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Plugins\GoogleCastRemoteDisplay\README.txt" />
     <None Include="Assets\Tobii\DemoScenes\Readme-DemoSceneSetup.txt" />
     <None Include="Assets\Tobii\Plugins\x86\Tobii.EyeX.Client.Net20.xml" />
     <None Include="Assets\Tobii\Plugins\x86_64\Tobii.EyeX.Client.Net20.xml" />
