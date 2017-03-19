@@ -73,6 +73,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\ButtonEvent\SceneChangeEvent.cs" />
+    <Compile Include="Assets\Scripts\MovieManger.cs" />
     <Compile Include="Assets\Scripts\TestScene.cs" />
     <Compile Include="Assets\Scripts\TrackingEyePrefabs.cs" />
     <Compile Include="Assets\Tobii\DemoScenes\Scripts\CloudPointVisualizer.cs" />

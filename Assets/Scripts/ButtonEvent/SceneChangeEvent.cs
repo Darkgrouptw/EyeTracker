@@ -4,19 +4,12 @@ using UnityEngine.SceneManagement;
 
 public class SceneChangeEvent : MonoBehaviour
 {
-    void Start()
-    {
-        Application.OpenURL(@"http://answers.unity3d.com");
-    }
-
     void Update()
     {
         // 離開程式
         if(Input.GetKeyDown(KeyCode.Escape))
             Application.Quit();
     }
-
-
     
     public void A1ToA2()
     {
