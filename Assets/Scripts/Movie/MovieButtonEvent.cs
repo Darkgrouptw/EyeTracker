@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 public class MovieButtonEvent : MonoBehaviour
 {
@@ -8,9 +10,14 @@ public class MovieButtonEvent : MonoBehaviour
     ////////////////////////////////////////////////////
     // Chromecast相關
     ////////////////////////////////////////////////////
+    [Header("========== Chromecast 相關 ==========")]
+    public RectTransform MoviePlane;
     private bool IsChromecast = false;
-
-
+    private Vector3 CurrentPos;
+    private Vector2 Currentsize;
+    private Vector3 ChromecastPos = new Vector3(517, -358, 0);
+    private Vector2 ChromecastSize = new Vector2(-1682, -1172);
+    private const float ChromecastCount = 0.5f;
 
     ////////////////////////////////////////////////////
     // 播放欄相關
@@ -23,10 +30,16 @@ public class MovieButtonEvent : MonoBehaviour
     private int NavStartPosY, FooterStartPosY;          // 上下一開始的位置
     private int NavbarEndPosY, FooterEndPosY;           // 上下移動終止的地方
     private int NavbarHeight, FooterHeight;             // 上下的寬度
-    private float NavbarMoveSpeed, FooterMoveSpeed;        // 上下的距離
+    private float NavbarMoveSpeed, FooterMoveSpeed;     // 上下的距離
     #endregion
 
-    private int HiddenStatus = 0;                       // 0 => 沒有要播動畫、1 => 消失動畫、2 => 消失的狀態、3 => 顯示動畫
+    // 0 => 沒有要播動畫
+    // 1 => 消失動畫
+    // 2 => 消失的狀態
+    // 3 => 顯示動畫
+    // 4 => Chromecast 消失動畫
+    // 5 => Chromecast 之後，縮小的 status
+    private int HiddenStatus = 0;                       // 狀態控制                       
     private float HiddenCounter = 0;                    // 計數器
     private const int HiddenTime = 6;                   // 6 秒沒有碰到，就會消失
     private const int HiddenProgress = 1;               // 消失 & 顯示的時間
@@ -43,12 +56,16 @@ public class MovieButtonEvent : MonoBehaviour
         FooterHeight = (int)footerHover.sizeDelta.y;
 
         // 上方
-        NavStartPosY = (int)Navbar.transform.localPosition.y;
+        NavStartPosY = (int)Navbar.localPosition.y;
         NavbarEndPosY = NavStartPosY + NavbarHeight;
 
         // 下方
-        FooterStartPosY = (int)Footer.transform.localPosition.y;
+        FooterStartPosY = (int)Footer.localPosition.y;
         FooterEndPosY = FooterStartPosY - FooterHeight;
+
+        // 把 Movie Plane 原始的資料拿下來
+        CurrentPos = MoviePlane.localPosition;
+        Currentsize = MoviePlane.sizeDelta;
     }
 
     void Update()
@@ -65,8 +82,8 @@ public class MovieButtonEvent : MonoBehaviour
                     HiddenStatus = 1;
 
                     // 從頭到目標的速度
-                    NavbarMoveSpeed = NavbarEndPosY - Navbar.transform.localPosition.y;
-                    FooterMoveSpeed = FooterEndPosY - Footer.transform.localPosition.y;
+                    NavbarMoveSpeed = NavbarEndPosY - Navbar.localPosition.y;
+                    FooterMoveSpeed = FooterEndPosY - Footer.localPosition.y;
                 }
                 break;
             case 1:
@@ -78,14 +95,13 @@ public class MovieButtonEvent : MonoBehaviour
                     HiddenStatus = 2;
                     HiddenCounter = 0;
 
-                    Navbar.transform.localPosition = new Vector3(0, NavbarEndPosY, 0);
-                    Footer.transform.localPosition = new Vector3(0, FooterEndPosY, 0);
+                    Navbar.localPosition = new Vector3(0, NavbarEndPosY, 0);
+                    Footer.localPosition = new Vector3(0, FooterEndPosY, 0);
                 }
                 else
                 {
-                    //float Progress = HiddenCounter / HiddenProgress;
-                    Navbar.transform.localPosition += new Vector3(0, NavbarMoveSpeed, 0) / HiddenProgress * Time.deltaTime;
-                    Footer.transform.localPosition += new Vector3(0, FooterMoveSpeed, 0) / HiddenProgress * Time.deltaTime;
+                    Navbar.localPosition += new Vector3(0, NavbarMoveSpeed, 0) / HiddenProgress * Time.deltaTime;
+                    Footer.localPosition += new Vector3(0, FooterMoveSpeed, 0) / HiddenProgress * Time.deltaTime;
                 }
                 break;
 
@@ -100,17 +116,36 @@ public class MovieButtonEvent : MonoBehaviour
                     HiddenStatus = 0;
                     HiddenCounter = 0;
 
-                    Navbar.transform.localPosition = new Vector3(0, NavStartPosY, 0);
-                    Footer.transform.localPosition = new Vector3(0, FooterStartPosY, 0);
+                    Navbar.localPosition = new Vector3(0, NavStartPosY, 0);
+                    Footer.localPosition = new Vector3(0, FooterStartPosY, 0);
                 }
                 else
                 {
-                    //float Progress = HiddenCounter / HiddenProgress;
-                    Navbar.transform.localPosition -= new Vector3(0, NavbarMoveSpeed, 0) / HiddenProgress * Time.deltaTime;
-                    Footer.transform.localPosition -= new Vector3(0, FooterMoveSpeed, 0) / HiddenProgress * Time.deltaTime;
+                    Navbar.localPosition -= new Vector3(0, NavbarMoveSpeed, 0) / HiddenProgress * Time.deltaTime;
+                    Footer.localPosition -= new Vector3(0, FooterMoveSpeed, 0) / HiddenProgress * Time.deltaTime;
                 }
                 break;
+            case 4:
+                HiddenCounter += Time.deltaTime;
 
+                // 這部分是做當要 chromecast 的時候，會把整個縮小的流程
+                if(HiddenCounter >= ChromecastCount)
+                {
+                    HiddenStatus = 5;
+                    HiddenCounter = 0;
+
+                    MoviePlane.localPosition = ChromecastPos;
+                    MoviePlane.sizeDelta = ChromecastSize;
+                }
+                else
+                {
+                    Vector3 diffPos = ChromecastPos - CurrentPos;
+                    Vector2 diffSize = ChromecastSize - Currentsize;
+
+                    MoviePlane.anchoredPosition3D = diffPos * HiddenCounter / ChromecastCount + CurrentPos;
+                    MoviePlane.sizeDelta = diffSize * HiddenCounter / ChromecastCount + Currentsize;
+                }
+                break;
         }
     }
 
@@ -125,8 +160,8 @@ public class MovieButtonEvent : MonoBehaviour
             case 1:
             case 2:
                 // 從現在到開始的速度
-                NavbarMoveSpeed = Navbar.transform.localPosition.y - NavStartPosY;
-                FooterMoveSpeed = Footer.transform.localPosition.y - FooterStartPosY;
+                NavbarMoveSpeed = Navbar.localPosition.y - NavStartPosY;
+                FooterMoveSpeed = Footer.localPosition.y - FooterStartPosY;
 
                 HiddenStatus = 3;
                 HiddenCounter = 0;
@@ -142,7 +177,14 @@ public class MovieButtonEvent : MonoBehaviour
     {
         if(!IsChromecast)
         {
+            IsChromecast = true;
+            HiddenStatus = 4;
+            HiddenCounter = 0;
 
+            Navbar.gameObject.SetActive(false);
+            Footer.gameObject.SetActive(false);
+
+            //SceneManager.LoadSceneAsync(3, LoadSceneMode.Additive);
         }
     }
 
