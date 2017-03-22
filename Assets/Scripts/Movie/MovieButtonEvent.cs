@@ -25,7 +25,9 @@ public class MovieButtonEvent : MonoBehaviour
     [Header("========== 播放欄相關的 ==========")]
     public RectTransform Navbar;                        // 上面那欄
     public RectTransform Footer;                        // 下面那欄
-    
+    public GameObject PlayButton;                       // 播放的按鈕
+    public GameObject StopButton;                       // 暫停的按鈕
+
     #region 座標的參數
     private int NavStartPosY, FooterStartPosY;          // 上下一開始的位置
     private int NavbarEndPosY, FooterEndPosY;           // 上下移動終止的地方
@@ -179,7 +181,24 @@ public class MovieButtonEvent : MonoBehaviour
         }
     }
 
+    // 影片播放見的按鈕
+    public void SetPlayButton(bool play)
+    {
+        MovieTexture movie = MoviePlane.GetComponent<MovieManger>().movie;
+        if (!play)
+            movie.Play();
+        else
+            movie.Pause();
+        ActivePlayButton(play);
+    }
+    private void ActivePlayButton(bool activeStatus)
+    {
+        PlayButton.SetActive(activeStatus);
+        StopButton.SetActive(!activeStatus);
+    }
 
+
+    // Chromecast 按鈕事件
     public void ChromecastButton()
     {
         if(!IsChromecast)

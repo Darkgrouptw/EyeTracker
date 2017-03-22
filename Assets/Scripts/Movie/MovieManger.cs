@@ -7,13 +7,14 @@ public class MovieManger : MonoBehaviour
 {
     [Header("========== 影片播放相關 ==========")]
     public MovieTexture movie;                                      // 影片
+    public MovieButtonEvent movieEvent;                             // 要拿它來使用按鈕
 
     public RectTransform FrontBar;                                  // 前面那條 bar
     public RectTransform BlueDot;                                   // 藍色的點
     public Text timeLabel;                                          // 時間的 Label
 
-    private const float MovieLength = 417;                          // 影片長度
-    private float MoviePlayTime = 0;                                // 影片目前播出的時間
+    public const float MovieLength = 417;                           // 影片長度
+    public float MoviePlayTime = 0;                                 // 影片目前播出的時間
     private const float MovieLoadingLength = 4;                     // 影片的讀取時間
 
 
@@ -35,6 +36,8 @@ public class MovieManger : MonoBehaviour
         {
             movie.Play();
             soundSource.Play();
+
+            movieEvent.SetPlayButton(false);
         }
 	}
 
@@ -50,6 +53,7 @@ public class MovieManger : MonoBehaviour
         }
         #endregion
     }
+
 
 
     #region 影片進度相關的 Function
