@@ -26,4 +26,13 @@ public class SceneChangeEvent : MonoBehaviour
     {
         SceneManager.LoadSceneAsync(4);
     }
+
+    public void A5ToA6()
+    {
+        SceneManager.LoadSceneAsync(5);
+    }
+    public void A6ToA1()
+    {
+        SceneManager.LoadSceneAsync(0);
+    }
 }

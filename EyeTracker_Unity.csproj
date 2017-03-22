@@ -79,11 +79,13 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\ButtonEvent\SceneChangeEvent.cs" />
+    <Compile Include="Assets\Scripts\Final Page\resetKey.cs" />
     <Compile Include="Assets\Scripts\Movie\MovieButtonEvent.cs" />
     <Compile Include="Assets\Scripts\Movie\MovieInfoSwitch.cs" />
     <Compile Include="Assets\Scripts\Movie\MovieManger.cs" />
     <Compile Include="Assets\Scripts\Movie\MovieTimeLineEvent.cs" />
     <Compile Include="Assets\Scripts\Question\QuestionEvent.cs" />
+    <Compile Include="Assets\Scripts\Score\ScoreMovieManager.cs" />
     <Compile Include="Assets\Scripts\TestScene.cs" />
     <Compile Include="Assets\Scripts\TrackingEyePrefabs.cs" />
     <Compile Include="Assets\Tobii\DemoScenes\Scripts\CloudPointVisualizer.cs" />
