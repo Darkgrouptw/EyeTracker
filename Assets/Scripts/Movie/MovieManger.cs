@@ -1,6 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
+
 
 [RequireComponent(typeof(RawImage))]
 public class MovieManger : MonoBehaviour
@@ -9,13 +11,16 @@ public class MovieManger : MonoBehaviour
     public MovieTexture movie;                                      // 影片
     public MovieButtonEvent movieEvent;                             // 要拿它來使用按鈕
 
+    [HideInInspector]
+    public AudioSource soundSource;
+
     public RectTransform FrontBar;                                  // 前面那條 bar
     public RectTransform BlueDot;                                   // 藍色的點
     public Text timeLabel;                                          // 時間的 Label
 
-    public const float MovieLength = 417;                           // 影片長度
-    public float MoviePlayTime = 0;                                 // 影片目前播出的時間
-    private const float MovieLoadingLength = 4;                     // 影片的讀取時間
+    private float MoviePlayTime = 0;                                // 影片目前播出的時間
+    private float MovieLength = 417;                                // 影片長度
+    private const float MovieLoadingLength = 5;                     // 影片的讀取時間
 
 
     // 座標參數
@@ -28,7 +33,7 @@ public class MovieManger : MonoBehaviour
         RawImage render = this.GetComponent<RawImage>();
         render.texture = movie;
 
-        AudioSource soundSource = this.gameObject.AddComponent<AudioSource>();
+        soundSource = this.gameObject.AddComponent<AudioSource>();
         soundSource.clip = movie.audioClip;
 
         // 判對他有沒有影片
@@ -50,6 +55,11 @@ public class MovieManger : MonoBehaviour
             BlueDot.localPosition = BlueDotLocation();
             FrontBar.localScale = FrontBarRatio();
             timeLabel.text = MovieTimeText();
+        }
+        else if(MoviePlayTime + MovieLoadingLength >= MovieLength)
+        {
+            // 換場景
+            SceneManager.LoadSceneAsync(4);
         }
         #endregion
     }
@@ -91,11 +101,29 @@ public class MovieManger : MonoBehaviour
     }
 
     // 回傳影片的百分比
-    private float MoviePlayRatio()
+    public float MoviePlayRatio()
     {
         if (MoviePlayTime <= MovieLoadingLength)
             return 0;
         return (MoviePlayTime - MovieLoadingLength) / (MovieLength - MovieLoadingLength);
+    }
+
+
+    // 重新播放後，時間要歸零
+    public void ResetTime()
+    {
+        MoviePlayTime = 0;
+    }
+
+
+    // 拿影片時間，會扣掉 loading 時間
+    public float GetMoviePlayTime()
+    {
+        return MoviePlayTime - MovieLoadingLength;
+    }
+    public float GetMovieLength()
+    {
+        return MovieLength - MovieLoadingLength;
     }
     #endregion
 }

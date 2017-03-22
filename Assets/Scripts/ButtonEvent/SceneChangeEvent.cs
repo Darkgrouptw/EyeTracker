@@ -19,4 +19,11 @@ public class SceneChangeEvent : MonoBehaviour
     {
         SceneManager.LoadSceneAsync(2);
     }
+
+    // 中間沒有 A3 到 A4，因為是影片播放完才過去
+
+    public void A4ToA5()
+    {
+        SceneManager.LoadSceneAsync(4);
+    }
 }

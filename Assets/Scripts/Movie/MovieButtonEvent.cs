@@ -4,6 +4,7 @@ using System.Collections;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
+[RequireComponent(typeof(MovieTimeLineEvent))]
 public class MovieButtonEvent : MonoBehaviour
 {
 
@@ -143,7 +144,11 @@ public class MovieButtonEvent : MonoBehaviour
                     #region 重新播放
                     MovieManger movieM = MoviePlane.GetComponent<MovieManger>();
                     movieM.movie.Play();
+                    movieM.soundSource.Play();
                     MoviePlane.GetComponent<RawImage>().color = Color.white;
+
+                    // 時間歸零
+                    movieM.ResetTime();
                     #endregion
                 }
                 else
@@ -213,7 +218,11 @@ public class MovieButtonEvent : MonoBehaviour
             #region 暫停播放
             MovieManger movieM = MoviePlane.GetComponent<MovieManger>();
             movieM.movie.Stop();
+            movieM.soundSource.Stop();
             MoviePlane.GetComponent<RawImage>().color = Color.black;
+
+            movieM.ResetTime();
+            this.GetComponent<MovieTimeLineEvent>().enabled = true;
             #endregion
             //SceneManager.LoadSceneAsync(3, LoadSceneMode.Additive);
         }
