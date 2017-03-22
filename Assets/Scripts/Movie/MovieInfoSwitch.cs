@@ -18,6 +18,7 @@ public class MovieInfoSwitch : MonoBehaviour
     // 移動的 Counter
     public AnimationCurve curveM;                       // 移動的曲線
     private float StartPosX, EndPosX;                   // 移動的時候，會紀律的座標點
+    private float InfoTextStartX, InfoTextEndX;         // 只最左邊那個(Text)，開始的點，到結束的點
     private bool IsMoving = false;                      // 判斷是否在移動，如果再移動，就不給動
     private float TimeCounter = 0;                      // 時間的 Counter
     private const float MoveTime = 0.5f;                // 移動的時間
@@ -33,7 +34,7 @@ public class MovieInfoSwitch : MonoBehaviour
         BarPosY = SwitchBar.localPosition.y;
 
         for (int i = 1; i < InfoText.Length; i++)
-            InfoText[i].localPosition = new Vector3(centerX + ScreenWidth, centerY, 0);
+            InfoText[i].localPosition = new Vector3(centerX + ScreenWidth * i, centerY, 0);
     }
 
     void Update()
@@ -49,6 +50,10 @@ public class MovieInfoSwitch : MonoBehaviour
                 // 取消移動
                 TimeCounter = 0;
                 IsMoving = false;
+
+                for (int i = 0; i < InfoText.Length; i++)
+                    InfoText[i].localPosition = new Vector3(InfoTextEndX + ScreenWidth * i
+                                                        , centerY, 0);
             }
             else
             {
@@ -56,6 +61,11 @@ public class MovieInfoSwitch : MonoBehaviour
                 float prograss = curveM.Evaluate(TimeCounter / MoveTime);
                 SwitchBar.localPosition = new Vector3(diff * prograss + StartPosX,
                                                     BarPosY, 0);
+
+                diff = InfoTextEndX - InfoTextStartX;
+                for (int i = 0; i < InfoText.Length; i++)
+                    InfoText[i].localPosition = new Vector3(diff * prograss + InfoTextStartX + ScreenWidth * i
+                                                        , centerY, 0);
             }
         }
     }
@@ -64,8 +74,14 @@ public class MovieInfoSwitch : MonoBehaviour
     {
         if(InfoStatus != 1 && !IsMoving)
         {
+            // 點的資訊
             StartPosX = BarPos[InfoStatus - 1];
             EndPosX = BarPos[0];
+
+            // Info Text 的資訊
+            InfoTextStartX = centerX - ScreenWidth * (InfoStatus - 1);
+            InfoTextEndX = centerX;
+
             InfoStatus = 1;
 
             IsMoving = true;
@@ -76,8 +92,14 @@ public class MovieInfoSwitch : MonoBehaviour
     {
         if(InfoStatus != 2 && !IsMoving)
         {
+            // 點的資訊
             StartPosX = BarPos[InfoStatus - 1];
             EndPosX = BarPos[1];
+
+            // Info Text 的資訊
+            InfoTextStartX = centerX - ScreenWidth * (InfoStatus - 1);
+            InfoTextEndX = centerX - ScreenWidth;
+
             InfoStatus = 2;
 
             IsMoving = true;
@@ -88,8 +110,14 @@ public class MovieInfoSwitch : MonoBehaviour
     {
         if(InfoStatus != 3 && !IsMoving)
         {
+            // 點的資訊
             StartPosX = BarPos[InfoStatus - 1];
             EndPosX = BarPos[2];
+
+            // Info Text 的資訊
+            InfoTextStartX = centerX - ScreenWidth * (InfoStatus - 1);
+            InfoTextEndX = centerX - ScreenWidth * 2;
+
             InfoStatus = 3;
 
             IsMoving = true;

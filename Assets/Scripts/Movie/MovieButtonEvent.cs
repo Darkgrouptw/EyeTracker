@@ -15,8 +15,8 @@ public class MovieButtonEvent : MonoBehaviour
     private bool IsChromecast = false;
     private Vector3 CurrentPos;
     private Vector2 Currentsize;
-    private Vector3 ChromecastPos = new Vector3(517, -358, 0);
-    private Vector2 ChromecastSize = new Vector2(-1682, -1172);
+    private Vector3 ChromecastPos = new Vector3(766, -498.5f, 0);
+    private Vector2 ChromecastSize = new Vector2(-1662, -1159);
     private const float ChromecastCount = 0.5f;
 
     ////////////////////////////////////////////////////
@@ -66,6 +66,7 @@ public class MovieButtonEvent : MonoBehaviour
         // 把 Movie Plane 原始的資料拿下來
         CurrentPos = MoviePlane.localPosition;
         Currentsize = MoviePlane.sizeDelta;
+
     }
 
     void Update()
@@ -136,6 +137,12 @@ public class MovieButtonEvent : MonoBehaviour
 
                     MoviePlane.localPosition = ChromecastPos;
                     MoviePlane.sizeDelta = ChromecastSize;
+
+                    #region 重新播放
+                    MovieManger movieM = MoviePlane.GetComponent<MovieManger>();
+                    movieM.movie.Play();
+                    MoviePlane.GetComponent<RawImage>().color = Color.white;
+                    #endregion
                 }
                 else
                 {
@@ -184,6 +191,11 @@ public class MovieButtonEvent : MonoBehaviour
             Navbar.gameObject.SetActive(false);
             Footer.gameObject.SetActive(false);
 
+            #region 暫停播放
+            MovieManger movieM = MoviePlane.GetComponent<MovieManger>();
+            movieM.movie.Stop();
+            MoviePlane.GetComponent<RawImage>().color = Color.black;
+            #endregion
             //SceneManager.LoadSceneAsync(3, LoadSceneMode.Additive);
         }
     }
