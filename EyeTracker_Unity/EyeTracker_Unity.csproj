@@ -76,6 +76,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Assets\Scripts\ButtonEvent\SceneChangeEvent.cs" />
+    <Compile Include="Assets\Scripts\CursorAPI\CursorAPI.cs" />
     <Compile Include="Assets\Scripts\Final Page\resetKey.cs" />
     <Compile Include="Assets\Scripts\Movie\MovieButtonEvent.cs" />
     <Compile Include="Assets\Scripts\Movie\MovieInfoSwitch.cs" />
