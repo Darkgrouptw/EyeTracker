@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 
 [RequireComponent(typeof(MovieSideEvent))]
 public class MovieTimeLineEvent : MonoBehaviour
@@ -143,5 +144,9 @@ public class MovieTimeLineEvent : MonoBehaviour
                 InfoBlockList[i].SetActive(false);
                 InfoBlockDarkList[i].SetActive(true);
             }
+
+        if (Input.GetKeyDown(KeyCode.Z))
+            SceneManager.LoadSceneAsync(3);
+            
     }
 }

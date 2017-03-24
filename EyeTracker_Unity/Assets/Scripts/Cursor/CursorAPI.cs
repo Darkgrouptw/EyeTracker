@@ -11,11 +11,9 @@ public class CursorAPI : MonoBehaviour
         SetCursorPosAPI((int)pos.x, (int)pos.y);
     }
 
-
-
     [DllImport("Cursor Function")]
     private static extern void SetCursorPosAPI(int x, int y);        // 滑鼠要移動到某個位置
 
     [DllImport("Cursor Function")]
-    private static extern void CursorClickAPI();                     // 要點及功能
+    public static extern void CursorClickAPI();                     // 要點及功能
 }
