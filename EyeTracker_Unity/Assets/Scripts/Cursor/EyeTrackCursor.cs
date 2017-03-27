@@ -99,7 +99,7 @@ public class EyeTrackCursor : MonoBehaviour
     {
         // 錄影的部分
         if(!Directory.Exists("./Records"))
-            Directory.CreateDirectory("../Records");
+            Directory.CreateDirectory("./Records");
 
         int index = SceneManager.GetActiveScene().buildIndex;
         string outputStr = "";
