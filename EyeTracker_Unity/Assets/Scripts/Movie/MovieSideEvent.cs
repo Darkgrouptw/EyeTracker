@@ -13,21 +13,33 @@ public class MovieSideEvent : MonoBehaviour
     public GameObject Dragon;
     public float MoveSpeed;
 
+    private MissionTimeCounter counter;
+
     void Start()
     {
+        #region 抓 Mission Time Counter
+        GameObject MissionTime = GameObject.FindGameObjectWithTag("Mission Time Tracker");
+        counter = MissionTime.GetComponent<MissionTimeCounter>();
+        #endregion
         // 把資料給進去
         Vector3 angle = Dragon.transform.localEulerAngles;
-        Debug.Log(Dragon.transform.forward);
     }
 
     public void TimeLineImageButtonEvent(int num)
     {
         BackgroundImage[num].SetActive(true);
+
+        // 任務三開始 (龍被點開)
+        if(num == 3)
+            counter.UpgradeToNextLevel(2);
     }
 
     public void CloseSideBackground(int num)
     {
         BackgroundImage[num].SetActive(false);
+
+        // 任務二 & 任務三結束
+        counter.RecordTime();
     }
 
     #region Dragon Event

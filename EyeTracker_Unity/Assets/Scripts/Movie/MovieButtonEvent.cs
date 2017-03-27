@@ -47,9 +47,15 @@ public class MovieButtonEvent : MonoBehaviour
     private const int HiddenTime = 6;                   // 6 秒沒有碰到，就會消失
     private const int HiddenProgress = 1;               // 消失 & 顯示的時間
 
+    private MissionTimeCounter counter;
 
     void Start()
     {
+        #region 抓 Mission Time Counter
+        GameObject MissionTime = GameObject.FindGameObjectWithTag("Mission Time Tracker");
+        counter = MissionTime.GetComponent<MissionTimeCounter>();
+        #endregion
+
         // 初始化給的寬
         RectTransform navbarHover = Navbar.GetComponentsInChildren<Transform>()[2].GetComponent<RectTransform>();
         RectTransform footerHover = Footer.GetComponentsInChildren<Transform>()[2].GetComponent<RectTransform>();
@@ -224,7 +230,9 @@ public class MovieButtonEvent : MonoBehaviour
             movieM.ResetTime();
             this.GetComponent<MovieTimeLineEvent>().enabled = true;
             #endregion
-            //SceneManager.LoadSceneAsync(3, LoadSceneMode.Additive);
+
+            // 任務二開始
+            counter.UpgradeToNextLevel(1);
         }
     }
 

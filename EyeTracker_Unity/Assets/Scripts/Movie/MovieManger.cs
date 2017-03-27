@@ -28,8 +28,14 @@ public class MovieManger : MonoBehaviour
     private const int EndPosX = 650;                                // 結束的 X 位置
     private const int PosY = -632;                                  // Y 的位置
 
+    private MissionTimeCounter counter;
+
 	void Start ()
     {
+        #region 抓 Mission Time Counter
+        GameObject MissionTime = GameObject.FindGameObjectWithTag("Mission Time Tracker");
+        counter = MissionTime.GetComponent<MissionTimeCounter>();
+        #endregion
         RawImage render = this.GetComponent<RawImage>();
         render.texture = movie;
 
@@ -58,6 +64,10 @@ public class MovieManger : MonoBehaviour
         }
         else if(MoviePlayTime + MovieLoadingLength >= MovieLength)
         {
+            // 任務四開始
+            counter.SaveAllState();
+            counter.UpgradeToNextLevel(3);
+
             // 換場景
             SceneManager.LoadSceneAsync(3);
         }

@@ -78,7 +78,8 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Assets\Scripts\ButtonEvent\SceneChangeEvent.cs" />
+    <Compile Include="Assets\Scripts\Common\MissionTimeCounter.cs" />
+    <Compile Include="Assets\Scripts\Common\SceneChangeEvent.cs" />
     <Compile Include="Assets\Scripts\Cursor\CursorAPI.cs" />
     <Compile Include="Assets\Scripts\Cursor\EyeTrackCursor.cs" />
     <Compile Include="Assets\Scripts\Final Page\resetKey.cs" />

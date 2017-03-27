@@ -37,10 +37,15 @@ public class MovieTimeLineEvent : MonoBehaviour
     private float TimeLineStartX, TimeLineEndX;         // 時間軸 X
     private float TimeLineY;                            // 時間軸 Y
     private float diff;                                 // 從起始到終點的距離
-    
+
+    private MissionTimeCounter counter;
 
     void Start()
     {
+        #region 抓 Mission Time Counter
+        GameObject MissionTime = GameObject.FindGameObjectWithTag("Mission Time Tracker");
+        counter = MissionTime.GetComponent<MissionTimeCounter>();
+        #endregion
         RectTransform Empty = BlueDotEmpty.GetComponent<RectTransform>();
         RectTransform Full = BlueDotFull.GetComponent<RectTransform>();
         sideEvent = this.GetComponent<MovieSideEvent>();
@@ -146,7 +151,13 @@ public class MovieTimeLineEvent : MonoBehaviour
             }
 
         if (Input.GetKeyDown(KeyCode.Z))
+        {
+            // 任務四開始
+            counter.UpgradeToNextLevel(3);
+            counter.SaveAllState();
+
             SceneManager.LoadSceneAsync(3);
-            
+        }
+
     }
 }

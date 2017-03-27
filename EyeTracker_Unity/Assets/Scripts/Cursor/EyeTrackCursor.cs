@@ -43,6 +43,9 @@ public class EyeTrackCursor : MonoBehaviour
     public bool IsRecord = true;
     private List<Vector2> recordData = new List<Vector2>();                                             // 存下來的所有 Data
 
+    // 任務計時相關
+    private MissionTimeCounter counter;
+
     #endregion
 
     void Start()
@@ -54,6 +57,11 @@ public class EyeTrackCursor : MonoBehaviour
         style.fontSize = 50;
 
         StartCoroutine(FPSCounter());
+
+        #region 抓 Mission Time Counter
+        GameObject MissionTime = GameObject.FindGameObjectWithTag("Mission Time Tracker");
+        counter = MissionTime.GetComponent<MissionTimeCounter>();
+        #endregion
     }
 
     void Update()
@@ -61,6 +69,10 @@ public class EyeTrackCursor : MonoBehaviour
         #region 判斷是否要開啟 Debug 的訊息
         if (Input.GetKeyDown(KeyCode.D))
             IsDebugMode = !IsDebugMode;
+        #endregion
+        #region 任務時間計算
+        if (!counter.IsRecordBefore)
+            counter.TimeCounter += Time.deltaTime;
         #endregion
         #region 眼動儀抓點
         if (!EyeTracking.GetGazePoint().IsValid)
