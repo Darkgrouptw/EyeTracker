@@ -202,6 +202,22 @@ namespace EyeTrackerTookit
                 SetSystemCursor(orgCursor[i], CursorIndex[i]);
         }
 
+
+        // 滑鼠點擊的參數
+        const int MOUSEEVENTF_LEFTDOWN = 0x0002;
+        const int MOUSEEVENTF_LEFTUP = 0x0004;
+        public void DoSingleClick()
+        {
+            mouse_event(MOUSEEVENTF_LEFTDOWN, 0, 0, 0, 0);
+            mouse_event(MOUSEEVENTF_LEFTUP, 0, 0, 0, 0);
+        }
+
+        public void DoDoubleClick()
+        {
+            DoSingleClick();
+            DoSingleClick();
+        }
+
         [DllImport("user32.dll")]
         static extern IntPtr CopyIcon(IntPtr pcur);
        
@@ -216,6 +232,9 @@ namespace EyeTrackerTookit
 
         [DllImport("user32.dll")]
         static extern bool SetCursorPos(int X, int Y);
+
+        [DllImport("user32.dll")]
+        static extern void mouse_event(int mode, int a, int b, int c, int d);
         #endregion
         #region 鍵盤相關
         // Hook
