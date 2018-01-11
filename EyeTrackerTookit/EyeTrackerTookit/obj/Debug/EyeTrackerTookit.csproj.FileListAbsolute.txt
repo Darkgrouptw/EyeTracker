@@ -1,0 +1,12 @@
+C:\Users\Dark\Desktop\SourceTree\EyeTracker\EyeTrackerTookit\EyeTrackerTookit\bin\Debug\EyeTrackerTookit.exe.config
+C:\Users\Dark\Desktop\SourceTree\EyeTracker\EyeTrackerTookit\EyeTrackerTookit\bin\Debug\Tobii.EyeX.Client.dll
+C:\Users\Dark\Desktop\SourceTree\EyeTracker\EyeTrackerTookit\EyeTrackerTookit\bin\Debug\EyeTrackerTookit.exe
+C:\Users\Dark\Desktop\SourceTree\EyeTracker\EyeTrackerTookit\EyeTrackerTookit\bin\Debug\EyeTrackerTookit.pdb
+C:\Users\Dark\Desktop\SourceTree\EyeTracker\EyeTrackerTookit\EyeTrackerTookit\bin\Debug\Tobii.Interaction.Model.dll
+C:\Users\Dark\Desktop\SourceTree\EyeTracker\EyeTrackerTookit\EyeTrackerTookit\bin\Debug\Tobii.Interaction.Net.dll
+C:\Users\Dark\Desktop\SourceTree\EyeTracker\EyeTrackerTookit\EyeTrackerTookit\obj\Debug\EyeTrackerTookit.csprojResolveAssemblyReference.cache
+C:\Users\Dark\Desktop\SourceTree\EyeTracker\EyeTrackerTookit\EyeTrackerTookit\obj\Debug\EyeTrackerTookit.EyeTrackerTookit.resources
+C:\Users\Dark\Desktop\SourceTree\EyeTracker\EyeTrackerTookit\EyeTrackerTookit\obj\Debug\EyeTrackerTookit.Properties.Resources.resources
+C:\Users\Dark\Desktop\SourceTree\EyeTracker\EyeTrackerTookit\EyeTrackerTookit\obj\Debug\EyeTrackerTookit.csproj.GenerateResource.Cache
+C:\Users\Dark\Desktop\SourceTree\EyeTracker\EyeTrackerTookit\EyeTrackerTookit\obj\Debug\EyeTrackerTookit.exe
+C:\Users\Dark\Desktop\SourceTree\EyeTracker\EyeTrackerTookit\EyeTrackerTookit\obj\Debug\EyeTrackerTookit.pdb
