@@ -32,16 +32,18 @@
             this.GetGazePointTimer = new System.Windows.Forms.Timer(this.components);
             this.IntroductionText = new System.Windows.Forms.Label();
             this.outputFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this.hScrollBar1 = new System.Windows.Forms.HScrollBar();
-            this.clickTimeGap = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.hScrollBar2 = new System.Windows.Forms.HScrollBar();
+            this.clickTimeGap = new System.Windows.Forms.HScrollBar();
+            this.clickTimeGapText = new System.Windows.Forms.Label();
+            this.clickDistanceGapText = new System.Windows.Forms.Label();
+            this.clickDistanceGap = new System.Windows.Forms.HScrollBar();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.hScrollBar3 = new System.Windows.Forms.HScrollBar();
-            this.label2 = new System.Windows.Forms.Label();
-            this.hScrollBar4 = new System.Windows.Forms.HScrollBar();
-            this.label3 = new System.Windows.Forms.Label();
+            this.SmoothingFactorB = new System.Windows.Forms.HScrollBar();
+            this.SmoothingFactorBText = new System.Windows.Forms.Label();
+            this.SmoothingFactorA = new System.Windows.Forms.HScrollBar();
+            this.SmoothingFactorAText = new System.Windows.Forms.Label();
+            this.ZFunctionText = new System.Windows.Forms.Label();
+            this.XFunctionText = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.SuspendLayout();
@@ -60,53 +62,61 @@
             this.IntroductionText.Name = "IntroductionText";
             this.IntroductionText.Size = new System.Drawing.Size(321, 120);
             this.IntroductionText.TabIndex = 0;
-            this.IntroductionText.Text = "說明：\r\n目前的版本只能是用在 1920 x1080的解析度\r\n以下是快捷鍵的說明：\r\nZ =>開啟/關閉眼動操控游標的功能\r\nY =>切換單擊/雙擊的 Mode" +
+            this.IntroductionText.Text = "說明：\r\n目前的版本只能是用在 1920 x1080的解析度\r\n以下是快捷鍵的說明：\r\nZ =>開啟/關閉眼動操控游標的功能\r\nX =>切換單擊/雙擊的 Mode" +
     "\r\nC =>是否要開始寫檔 ";
             // 
             // outputFileDialog
             // 
-            this.outputFileDialog.Filter = "文字檔|*.txt";
-            // 
-            // hScrollBar1
-            // 
-            this.hScrollBar1.Location = new System.Drawing.Point(8, 39);
-            this.hScrollBar1.Name = "hScrollBar1";
-            this.hScrollBar1.Size = new System.Drawing.Size(333, 20);
-            this.hScrollBar1.TabIndex = 1;
+            this.outputFileDialog.Filter = "Excel 檔|*.csv";
             // 
             // clickTimeGap
             // 
-            this.clickTimeGap.AutoSize = true;
-            this.clickTimeGap.Font = new System.Drawing.Font("微軟正黑體", 12F);
-            this.clickTimeGap.Location = new System.Drawing.Point(6, 18);
+            this.clickTimeGap.Location = new System.Drawing.Point(8, 39);
+            this.clickTimeGap.Maximum = 109;
+            this.clickTimeGap.Minimum = 1;
             this.clickTimeGap.Name = "clickTimeGap";
-            this.clickTimeGap.Size = new System.Drawing.Size(121, 20);
-            this.clickTimeGap.TabIndex = 2;
-            this.clickTimeGap.Text = "多久不動算點擊";
+            this.clickTimeGap.Size = new System.Drawing.Size(333, 20);
+            this.clickTimeGap.TabIndex = 1;
+            this.clickTimeGap.Value = 1;
+            this.clickTimeGap.ValueChanged += new System.EventHandler(this.clickTimeGap_ValueChanged);
             // 
-            // label1
+            // clickTimeGapText
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("微軟正黑體", 12F);
-            this.label1.Location = new System.Drawing.Point(6, 98);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(89, 20);
-            this.label1.TabIndex = 4;
-            this.label1.Text = "多少算不動";
+            this.clickTimeGapText.AutoSize = true;
+            this.clickTimeGapText.Font = new System.Drawing.Font("微軟正黑體", 12F);
+            this.clickTimeGapText.Location = new System.Drawing.Point(6, 18);
+            this.clickTimeGapText.Name = "clickTimeGapText";
+            this.clickTimeGapText.Size = new System.Drawing.Size(173, 20);
+            this.clickTimeGapText.TabIndex = 2;
+            this.clickTimeGapText.Text = "多久不動算點擊 (0.1秒)";
             // 
-            // hScrollBar2
+            // clickDistanceGapText
             // 
-            this.hScrollBar2.Location = new System.Drawing.Point(3, 128);
-            this.hScrollBar2.Name = "hScrollBar2";
-            this.hScrollBar2.Size = new System.Drawing.Size(333, 20);
-            this.hScrollBar2.TabIndex = 3;
+            this.clickDistanceGapText.AutoSize = true;
+            this.clickDistanceGapText.Font = new System.Drawing.Font("微軟正黑體", 12F);
+            this.clickDistanceGapText.Location = new System.Drawing.Point(6, 98);
+            this.clickDistanceGapText.Name = "clickDistanceGapText";
+            this.clickDistanceGapText.Size = new System.Drawing.Size(153, 20);
+            this.clickDistanceGapText.TabIndex = 4;
+            this.clickDistanceGapText.Text = "多少算不動 (16像素)";
+            // 
+            // clickDistanceGap
+            // 
+            this.clickDistanceGap.Location = new System.Drawing.Point(3, 128);
+            this.clickDistanceGap.Maximum = 137;
+            this.clickDistanceGap.Minimum = 16;
+            this.clickDistanceGap.Name = "clickDistanceGap";
+            this.clickDistanceGap.Size = new System.Drawing.Size(333, 20);
+            this.clickDistanceGap.TabIndex = 3;
+            this.clickDistanceGap.Value = 16;
+            this.clickDistanceGap.ValueChanged += new System.EventHandler(this.clickDistanceGap_ValueChanged);
             // 
             // groupBox1
             // 
-            this.groupBox1.Controls.Add(this.hScrollBar2);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Controls.Add(this.hScrollBar1);
+            this.groupBox1.Controls.Add(this.clickDistanceGap);
+            this.groupBox1.Controls.Add(this.clickDistanceGapText);
             this.groupBox1.Controls.Add(this.clickTimeGap);
+            this.groupBox1.Controls.Add(this.clickTimeGapText);
             this.groupBox1.Location = new System.Drawing.Point(12, 145);
             this.groupBox1.Name = "groupBox1";
             this.groupBox1.Size = new System.Drawing.Size(344, 162);
@@ -116,56 +126,82 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.hScrollBar3);
-            this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Controls.Add(this.hScrollBar4);
-            this.groupBox2.Controls.Add(this.label3);
+            this.groupBox2.Controls.Add(this.SmoothingFactorB);
+            this.groupBox2.Controls.Add(this.SmoothingFactorBText);
+            this.groupBox2.Controls.Add(this.SmoothingFactorA);
+            this.groupBox2.Controls.Add(this.SmoothingFactorAText);
             this.groupBox2.Location = new System.Drawing.Point(12, 332);
             this.groupBox2.Name = "groupBox2";
             this.groupBox2.Size = new System.Drawing.Size(344, 162);
             this.groupBox2.TabIndex = 6;
             this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "不抖動相關參數";
+            this.groupBox2.Text = "不抖動相關參數 (Double Exponential Filter)";
             // 
-            // hScrollBar3
+            // SmoothingFactorB
             // 
-            this.hScrollBar3.Location = new System.Drawing.Point(3, 128);
-            this.hScrollBar3.Name = "hScrollBar3";
-            this.hScrollBar3.Size = new System.Drawing.Size(333, 20);
-            this.hScrollBar3.TabIndex = 3;
+            this.SmoothingFactorB.Location = new System.Drawing.Point(3, 128);
+            this.SmoothingFactorB.Maximum = 19;
+            this.SmoothingFactorB.Name = "SmoothingFactorB";
+            this.SmoothingFactorB.Size = new System.Drawing.Size(333, 20);
+            this.SmoothingFactorB.TabIndex = 3;
+            this.SmoothingFactorB.ValueChanged += new System.EventHandler(this.SmoothingFactorB_ValueChanged);
             // 
-            // label2
+            // SmoothingFactorBText
             // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("微軟正黑體", 12F);
-            this.label2.Location = new System.Drawing.Point(6, 98);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(89, 20);
-            this.label2.TabIndex = 4;
-            this.label2.Text = "多少算不動";
+            this.SmoothingFactorBText.AutoSize = true;
+            this.SmoothingFactorBText.Font = new System.Drawing.Font("微軟正黑體", 12F);
+            this.SmoothingFactorBText.Location = new System.Drawing.Point(6, 98);
+            this.SmoothingFactorBText.Name = "SmoothingFactorBText";
+            this.SmoothingFactorBText.Size = new System.Drawing.Size(192, 20);
+            this.SmoothingFactorBText.TabIndex = 4;
+            this.SmoothingFactorBText.Text = "SmoothingFactorB = 0.9\r\n";
             // 
-            // hScrollBar4
+            // SmoothingFactorA
             // 
-            this.hScrollBar4.Location = new System.Drawing.Point(8, 39);
-            this.hScrollBar4.Name = "hScrollBar4";
-            this.hScrollBar4.Size = new System.Drawing.Size(333, 20);
-            this.hScrollBar4.TabIndex = 1;
+            this.SmoothingFactorA.Location = new System.Drawing.Point(8, 39);
+            this.SmoothingFactorA.Maximum = 19;
+            this.SmoothingFactorA.Name = "SmoothingFactorA";
+            this.SmoothingFactorA.Size = new System.Drawing.Size(333, 20);
+            this.SmoothingFactorA.TabIndex = 1;
+            this.SmoothingFactorA.ValueChanged += new System.EventHandler(this.SmoothingFactorA_ValueChanged);
             // 
-            // label3
+            // SmoothingFactorAText
             // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("微軟正黑體", 12F);
-            this.label3.Location = new System.Drawing.Point(6, 18);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(121, 20);
-            this.label3.TabIndex = 2;
-            this.label3.Text = "多久不動算點擊";
+            this.SmoothingFactorAText.AutoSize = true;
+            this.SmoothingFactorAText.Font = new System.Drawing.Font("微軟正黑體", 12F);
+            this.SmoothingFactorAText.Location = new System.Drawing.Point(6, 18);
+            this.SmoothingFactorAText.Name = "SmoothingFactorAText";
+            this.SmoothingFactorAText.Size = new System.Drawing.Size(193, 20);
+            this.SmoothingFactorAText.TabIndex = 2;
+            this.SmoothingFactorAText.Text = "SmoothingFactorA = 0.1\r\n";
+            // 
+            // ZFunctionText
+            // 
+            this.ZFunctionText.AutoSize = true;
+            this.ZFunctionText.Font = new System.Drawing.Font("微軟正黑體", 12F);
+            this.ZFunctionText.Location = new System.Drawing.Point(305, 68);
+            this.ZFunctionText.Name = "ZFunctionText";
+            this.ZFunctionText.Size = new System.Drawing.Size(51, 20);
+            this.ZFunctionText.TabIndex = 7;
+            this.ZFunctionText.Text = "(關閉)";
+            // 
+            // XFunctionText
+            // 
+            this.XFunctionText.AutoSize = true;
+            this.XFunctionText.Font = new System.Drawing.Font("微軟正黑體", 12F);
+            this.XFunctionText.Location = new System.Drawing.Point(304, 90);
+            this.XFunctionText.Name = "XFunctionText";
+            this.XFunctionText.Size = new System.Drawing.Size(51, 20);
+            this.XFunctionText.TabIndex = 9;
+            this.XFunctionText.Text = "(單擊)";
             // 
             // EyeTrackerTookit
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(369, 506);
+            this.Controls.Add(this.XFunctionText);
+            this.Controls.Add(this.ZFunctionText);
             this.Controls.Add(this.groupBox2);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.IntroductionText);
@@ -187,16 +223,18 @@
         private System.Windows.Forms.Timer GetGazePointTimer;
         private System.Windows.Forms.Label IntroductionText;
         private System.Windows.Forms.SaveFileDialog outputFileDialog;
-        private System.Windows.Forms.HScrollBar hScrollBar1;
-        private System.Windows.Forms.Label clickTimeGap;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.HScrollBar hScrollBar2;
+        private System.Windows.Forms.HScrollBar clickTimeGap;
+        private System.Windows.Forms.Label clickTimeGapText;
+        private System.Windows.Forms.Label clickDistanceGapText;
+        private System.Windows.Forms.HScrollBar clickDistanceGap;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.HScrollBar hScrollBar3;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.HScrollBar hScrollBar4;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.HScrollBar SmoothingFactorB;
+        private System.Windows.Forms.Label SmoothingFactorBText;
+        private System.Windows.Forms.HScrollBar SmoothingFactorA;
+        private System.Windows.Forms.Label SmoothingFactorAText;
+        private System.Windows.Forms.Label ZFunctionText;
+        private System.Windows.Forms.Label XFunctionText;
     }
 }
 

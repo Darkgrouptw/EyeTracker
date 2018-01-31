@@ -31,15 +31,32 @@ namespace EyeTrackerTookit
         private IntPtr[] orgCursor;
         private IntPtr targetCursor;
 
-        // 設定變數
-        private static SaveFileDialog dialog;
+        // 控制流程的變數
         private static bool IsEnableControl = false;        // 是否要被眼動儀控制
         private static bool IsSingleClickModel = true;      // 是否是單擊模式 ((另外一個是雙擊模式
         private static bool IsRecording = false;            // 是否有在錄影
         private static bool TryToUnRecording = false;       // 試著要解除 Recording 了
+        private static Label ZText;
+        private static Label XText;
+
+        // 可調整的變數
+        private float FreezeTimeToClick = 1.0f;             // 幾秒不動會被點擊
+        private int FreezeDistanceToClick = 96;             // 不動距離多少 pixel 算點擊
+        private float SmoothFactorAValue = 0.1f;            // Double Exp filter 的 A
+        private float SmoothFactorBValue = 0.9f;            // Double Exp filter 的 B
+
+        // click 參數
+        private MathUtil.Vector2 clickTempVector = new MathUtil.Vector2();
+        private double clickTime;
+
+        // Double Exp 的參數
+        private bool IsTime0Past = false;
+        private bool IsTime1Past = false;
+        private MathUtil.Vector2 HistoryPointTime0;
+        private MathUtil.Vector2 s, b;
 
         // 紀錄的陣列
-        private static List<string> LineData = new List<string>();
+        private List<string> LineData = new List<string>();
 
         public EyeTrackerTookit()
         {
@@ -49,21 +66,28 @@ namespace EyeTrackerTookit
         //開啟
         private void EyeTrackerTookit_Load(object sender, EventArgs e)
         {
+            // 設定視窗在右下角
+            SetFormToRightCorner();
+
             // 設定眼動儀
             host = new Host();
             stream = host.Streams.CreateGazePointDataStream();
 
-            // 把 Dialog 抓到 static 中
-            dialog = outputFileDialog;
+            // 設定全部 Scroll Bar 的初始值
+            InitScrollBarValue();
 
             // 設定游標
             SetupSystemCursorImage();
 
             // 設定鍵盤 Hook
             SetHook();
+
+            // 設定 static 變數，給 Hook 的時候使用
+            ZText = ZFunctionText;
+            XText = XFunctionText;
         }
 
-        // 關閉
+        // 關閉v
         private void EyeTrackerTookit_FormClosed(object sender, FormClosedEventArgs e)
         {
             // 關閉眼動儀的連線
@@ -82,23 +106,48 @@ namespace EyeTrackerTookit
             stream.GazePoint((x, y, ts) => CopyToGlobalVariable(x, y, ts));
 
             // Clipping 到螢幕中
-            ClippingTo1920_1080();
-            //ClippingTo2160_1440();
+            ClippingToScreenSize();
 
             // 代表資料不一樣
             // 要覆蓋 last 的值
             if (lastTimeStamp != timeStamp)
             {
+                // 使用 Double Exp
+                MathUtil.Vector2 tempVector2 = DoubleExpFilter(new MathUtil.Vector2(eyeX, eyeY));
+                eyeX = tempVector2.X;
+                eyeY = tempVector2.Y;
                 lastEyeX = eyeX;
                 lastEyeY = eyeY;
+
                 lastTimeStamp = timeStamp;
 
                 // 是否要被眼動儀 Control
                 if(IsEnableControl)
+                {
                     SetCursorPos((int)eyeX, (int)eyeY);
 
-                // 是否要被記錄
-                if(IsRecording)
+                    // 點擊判斷
+                    if (MathUtil.Vector2.Distance(clickTempVector, tempVector2) > FreezeDistanceToClick)
+                    {
+                        clickTempVector = tempVector2;
+                        clickTime = 0;
+                    }
+                    else if ((float)(clickTime * GetGazePointTimer.Interval) / 1000 > FreezeTimeToClick)
+                    {
+                        if (IsSingleClickModel)
+                            DoSingleClick();
+                        else
+                            DoDoubleClick();
+
+                        clickTempVector = tempVector2;
+                        clickTime = 0;
+                    }
+                    else
+                        clickTime++;
+                }
+
+                #region 記錄相關
+                if (IsRecording)
                 {
                     string line = eyeX.ToString() + "," + eyeY.ToString() + "," + timeStamp.ToString();
                     LineData.Add(line);
@@ -110,14 +159,13 @@ namespace EyeTrackerTookit
                         UnHook();
 
                         // 找到位置，並儲存
-                        if (dialog.ShowDialog() == DialogResult.OK)
+                        if (outputFileDialog.ShowDialog() == DialogResult.OK)
                         {
                             // 寫出檔案
                             string outputStr = "X, Y, TimeStamp\n";
                             for (int i = 0; i < LineData.Count; i++)
                                 outputStr += LineData[i] + "\n";
-                            System.IO.File.WriteAllText(dialog.FileName, outputStr);
-                            
+                            System.IO.File.WriteAllText(outputFileDialog.FileName, outputStr);
                         }
                         LineData.Clear();
 
@@ -129,8 +177,7 @@ namespace EyeTrackerTookit
                         IsRecording = false;
                     }
                 }
-
-
+                #endregion
             }
         }
 
@@ -145,34 +192,24 @@ namespace EyeTrackerTookit
         }
 
         // Clipping 到螢幕中
-        private void ClippingTo1920_1080()
+        private void ClippingToScreenSize()
         {
             if (eyeX < 0)
                 eyeX = 0;
 
-            if (eyeX >= 1920)
-                eyeX = 1920 - 1;
+            if (eyeX >= Screen.PrimaryScreen.WorkingArea.Width)
+                eyeX = Screen.PrimaryScreen.WorkingArea.Width - 1;
 
             if (eyeY < 0)
                 eyeY = 0;
 
-            if (eyeY >= 1080)
-                eyeY = 1080 - 1;
+            if (eyeY >= Screen.PrimaryScreen.WorkingArea.Height)
+                eyeY = Screen.PrimaryScreen.WorkingArea.Height - 1;
         }
 
-        private void ClippingTo2160_1440()
+        private void SetFormToRightCorner()
         {
-            if (eyeX < 0)
-                eyeX = 0;
-
-            if (eyeX >= 2160)
-                eyeX = 2160 - 1;
-
-            if (eyeY < 0)
-                eyeY = 0;
-
-            if (eyeY >= 1440)
-                eyeY = 1440 - 1;
+            this.Location = new Point(Screen.PrimaryScreen.WorkingArea.Width - this.Width + 5, Screen.PrimaryScreen.WorkingArea.Height - this.Height + 5);
         }
         #endregion
         #region 游標相關
@@ -263,9 +300,21 @@ namespace EyeTrackerTookit
                 int vkCode = Marshal.ReadInt32(lParam);
 
                 if (vkCode == (int)Keys.Z)
+                {
                     IsEnableControl = !IsEnableControl;
+                    if (IsEnableControl)
+                        ZText.Text = "(開啟)";
+                    else
+                        ZText.Text = "(關閉)";
+                }
                 else if (vkCode == (int)Keys.X)
+                {
                     IsSingleClickModel = !IsSingleClickModel;
+                    if (IsSingleClickModel)
+                        XText.Text = "(單擊)";
+                    else
+                        XText.Text = "(雙擊)";
+                }
                 else if(vkCode == (int)Keys.C)
                 {
                     // 要結束錄
@@ -284,7 +333,6 @@ namespace EyeTrackerTookit
         // 設定 process
         private delegate IntPtr LowLevelKeyboardProc(int nCode, IntPtr wParam, IntPtr lParam);
 
-        
         [DllImport("user32.dll")]
         static extern IntPtr SetWindowsHookEx(int idHook, LowLevelKeyboardProc callback, IntPtr hInstance, uint threadId);
 
@@ -293,6 +341,69 @@ namespace EyeTrackerTookit
 
         [DllImport("user32.dll")]
         static extern bool UnhookWindowsHookEx(IntPtr hInstance);
+        #endregion
+        #region 調整參數的 Function
+        private void InitScrollBarValue()
+        {
+            clickTimeGap.Value = (int)Math.Round(FreezeTimeToClick * 10);
+            clickDistanceGap.Value = FreezeDistanceToClick;
+            SmoothingFactorA.Value = (int)Math.Round(SmoothFactorAValue * 10);
+            SmoothingFactorB.Value = (int)Math.Round(SmoothFactorBValue * 10);
+        }
+        #region 事件類
+        private void clickTimeGap_ValueChanged(object sender, EventArgs e)
+        {
+            float value = (float)clickTimeGap.Value / 10;
+            FreezeTimeToClick = value;
+            clickTimeGapText.Text = "多久不動算點擊 (" + FreezeTimeToClick.ToString("F1") + "秒)";
+        }
+
+        private void clickDistanceGap_ValueChanged(object sender, EventArgs e)
+        {
+            FreezeDistanceToClick = clickDistanceGap.Value;
+            clickDistanceGapText.Text = "多少算不動 (" + FreezeDistanceToClick.ToString() + "像素)";
+        }
+
+        private void SmoothingFactorA_ValueChanged(object sender, EventArgs e)
+        {
+            SmoothFactorAValue = (float)SmoothingFactorA.Value / 10;
+            SmoothingFactorAText.Text = "SmoothingFactorA = " + SmoothFactorAValue.ToString("F1");
+        }
+        
+        private void SmoothingFactorB_ValueChanged(object sender, EventArgs e)
+        {
+            SmoothFactorBValue = (float)SmoothingFactorB.Value / 10;
+            SmoothingFactorBText.Text = "SmoothingFactorB = " + SmoothFactorBValue.ToString("F1");
+        }
+        #endregion
+
+        // Double Exp Function
+        MathUtil.Vector2 DoubleExpFilter(MathUtil.Vector2 InputPos)
+        {
+            // s0
+            if (!IsTime0Past)
+            {
+                HistoryPointTime0 = InputPos;
+                IsTime0Past = true;
+                return InputPos;
+            }
+
+            // s1
+            if (!IsTime1Past)
+            {
+                s = InputPos;
+                b = InputPos - HistoryPointTime0;
+                IsTime1Past = true;
+                return s + b;
+            }
+
+            MathUtil.Vector2 NextS, NextB;
+            NextS = SmoothFactorAValue * InputPos + MathUtil.MathUtil.Clamp01(1 - SmoothFactorAValue) * (s - b);
+            NextB = SmoothFactorBValue * (NextS - s) + MathUtil.MathUtil.Clamp01(1 - SmoothFactorBValue) * b;
+            s = NextS;
+            b = NextB;
+            return s + b;
+        }
         #endregion
         #endregion
     }
