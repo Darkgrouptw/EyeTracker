@@ -60,10 +60,10 @@
             this.IntroductionText.Font = new System.Drawing.Font("微軟正黑體", 12F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(136)));
             this.IntroductionText.Location = new System.Drawing.Point(12, 9);
             this.IntroductionText.Name = "IntroductionText";
-            this.IntroductionText.Size = new System.Drawing.Size(321, 120);
+            this.IntroductionText.Size = new System.Drawing.Size(262, 120);
             this.IntroductionText.TabIndex = 0;
-            this.IntroductionText.Text = "說明：\r\n目前的版本只能是用在 1920 x1080的解析度\r\n以下是快捷鍵的說明：\r\nZ =>開啟/關閉眼動操控游標的功能\r\nX =>切換單擊/雙擊的 Mode" +
-    "\r\nC =>是否要開始寫檔 ";
+            this.IntroductionText.Text = "說明：\r\n目前為 1920x1080 的解析度\r\n以下是快捷鍵的說明：\r\nZ =>開啟/關閉眼動操控游標的功能\r\nX =>切換單擊/雙擊的 Mode\r\nC =>是" +
+    "否要開始寫檔 ";
             // 
             // outputFileDialog
             // 

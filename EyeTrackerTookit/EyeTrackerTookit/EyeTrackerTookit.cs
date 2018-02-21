@@ -85,6 +85,15 @@ namespace EyeTrackerTookit
             // 設定 static 變數，給 Hook 的時候使用
             ZText = ZFunctionText;
             XText = XFunctionText;
+
+            // 設定文字
+            if (Screen.PrimaryScreen.Bounds.Width != 1920 || Screen.PrimaryScreen.Bounds.Height != 1080)
+                IntroductionText.Text = "說明：\n" +
+                                        "目前為 " + Screen.PrimaryScreen.Bounds.Width.ToString() + "x"+ Screen.PrimaryScreen.Bounds.Height.ToString() + " 的解析度:\n" +
+                                        "以下是快捷鍵的說明：\n" +
+                                        "Z =>開啟 / 關閉眼動操控游標的功能\n" +
+                                        "X =>切換單擊 / 雙擊的 Mode\n" +
+                                        "C =>是否要開始寫檔";
         }
 
         // 關閉v
@@ -197,14 +206,14 @@ namespace EyeTrackerTookit
             if (eyeX < 0)
                 eyeX = 0;
 
-            if (eyeX >= Screen.PrimaryScreen.WorkingArea.Width)
-                eyeX = Screen.PrimaryScreen.WorkingArea.Width - 1;
+            if (eyeX >= Screen.PrimaryScreen.Bounds.Width)
+                eyeX = Screen.PrimaryScreen.Bounds.Width - 1;
 
             if (eyeY < 0)
                 eyeY = 0;
 
-            if (eyeY >= Screen.PrimaryScreen.WorkingArea.Height)
-                eyeY = Screen.PrimaryScreen.WorkingArea.Height - 1;
+            if (eyeY >= Screen.PrimaryScreen.Bounds.Height)
+                eyeY = Screen.PrimaryScreen.Bounds.Height - 1;
         }
 
         private void SetFormToRightCorner()
